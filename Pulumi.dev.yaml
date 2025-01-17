@@ -1,0 +1,17 @@
+encryptionsalt: v1:P207S/Axk/4=:v1:s9wZKmmsYngx1WNL:T8PAF2caQWzEODBeeh2K80JmRsIMog==
+config:
+  gcp:region: us-central1
+  gcp:zone: us-central1-a
+  gcp:project: amiara-dev-be
+  amiara-iac-apps:cluster:
+    clusterName: "amiara-dev-cluster"
+    nodePoolName: "amiara-dev-nodepool"
+    machineType: "e2-standard-2"
+    minNodes: 1
+    maxNodes: 3
+  amiara-iac-apps:redis:
+    instanceName: "amiara-dev-redis"
+    memorySizeGb: 1
+    tier: "BASIC"
+    redisVersion: "REDIS_7_2"
+    authEnabled: true
