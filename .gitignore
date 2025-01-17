@@ -2,3 +2,4 @@ node_modules/
 .pulumi/
 *.bak
 .aider*
+!.aider.conf.yml
