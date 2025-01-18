@@ -4,6 +4,9 @@ const { enableApis } = require("./src/apis");
 const { createCluster } = require("./src/cluster");
 const { createRedis } = require("./src/redis");
 const { createPostgres } = require("./src/postgres");
+const { createRbac } = require("./src/rbac");
+const { createIamBindings } = require("./src/iam");
+const k8s = require("@pulumi/kubernetes");
 
 // Get configurations from Pulumi config
 const config = new pulumi.Config();
@@ -23,6 +26,7 @@ const apis = enableApis(provider);
 const clusterConfig = config.requireObject("cluster");
 const redisConfig = config.requireObject("redis");
 const postgresConfig = config.requireObject("postgres");
+const rbacConfig = config.requireObject("rbac");
 
 // Create GKE cluster
 const { cluster, nodePool, kubeconfig } = createCluster(
@@ -77,3 +81,35 @@ exports.redisAuth = redisAuth;
 // Export PostgreSQL values
 exports.postgresHost = postgresHost;
 exports.postgresConnectionName = postgresConnectionName;
+
+// Create K8s provider and RBAC
+const k8sProvider = new k8s.Provider("k8s-provider", {
+    kubeconfig: pulumi.interpolate`apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: ${kubeconfig.clusterCaCertificate}
+    server: https://${cluster.endpoint}
+  name: ${cluster.name}
+contexts:
+- context:
+    cluster: ${cluster.name}
+    user: ${cluster.name}
+  name: ${cluster.name}
+current-context: ${cluster.name}
+kind: Config
+users:
+- name: ${cluster.name}
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      command: gke-gcloud-auth-plugin
+      installHint: Install gke-gcloud-auth-plugin for use with kubectl by following
+        https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
+      provideClusterInfo: true`
+}, { dependsOn: cluster });
+
+// Create IAM bindings for RBAC users
+const iam = createIamBindings(provider, rbacConfig.users, gcpConfig.require("project"));
+
+// Create RBAC roles and bindings
+const rbac = createRbac(k8sProvider, rbacConfig.users);

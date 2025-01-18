@@ -24,5 +24,9 @@ config:
     diskType: "PD_SSD"
     dbName: "amiara_dev_db"
     userName: "amiara_dev_user"
+  amiara-iac-apps:rbac:
+    users:
+      - email: "bryon@amiara.ai"
+        role: "developer"
   postgres:userPassword:
     secure: v1:zWWvBWv221QFBm7Z:WPXe96ogctpBlkTyAuhjn9xSqEcgGNdAdmPzg06LhJDZtcKfvDPVDHC2
