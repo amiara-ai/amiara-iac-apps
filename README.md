@@ -10,6 +10,7 @@ provisioning using Node.js.
 
 - 🚀 Automated GKE cluster provisioning with configurable node pools
 - 💾 Managed Redis instance deployment with secure authentication
+- 🎲 PostgreSQL database instance with secure user management
 - 🔌 Automatic API enablement for required GCP services
 - 🔐 Secure configuration management with Pulumi
 - 📦 Modular architecture for easy maintenance and scaling
@@ -69,6 +70,15 @@ config:
     tier: "BASIC"
     redisVersion: "REDIS_7_2"
     authEnabled: true
+  amiara-iac-apps:postgres:
+    instanceName: "your-postgres-instance"
+    tier: "db-f1-micro"
+    databaseVersion: "POSTGRES_15"
+    availabilityType: "ZONAL"
+    diskSize: 10
+    diskType: "PD_SSD"
+    dbName: "your_database_name"
+    userName: "your_database_user"
 ```
 
 ## Usage
@@ -111,6 +121,20 @@ pulumi stack output redisPort
 pulumi stack output redisAuth
 ```
 
+#### PostgreSQL Instance
+
+Connection details are available in the stack outputs:
+```bash
+pulumi stack output postgresHost
+pulumi stack output postgresConnectionName
+```
+
+Note: The PostgreSQL user password is managed securely through Pulumi's secret management system.
+Set it using:
+```bash
+pulumi config set --secret postgres:userPassword <your-secure-password>
+```
+
 ## Project Structure
 
 ```
@@ -135,6 +159,7 @@ pulumi stack output redisAuth
   - Compute Engine API
   - Kubernetes Engine API
   - Redis API
+  - Cloud SQL Admin API
 
 ### Cleanup
 

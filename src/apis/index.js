@@ -19,9 +19,16 @@ exports.enableApis = (provider) => {
         disableOnDestroy: false,
     }, { provider });
 
+    const enableSqlAdmin = new gcp.projects.Service("enable-sqladmin", {
+        project: provider.project,
+        service: "sqladmin.googleapis.com",
+        disableOnDestroy: false,
+    }, { provider });
+
     return {
         computeApi: enableCompute,
         containerApi: enableContainer,
         redisApi: enableRedis,
+        sqlAdminApi: enableSqlAdmin,
     };
 };

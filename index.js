@@ -3,6 +3,7 @@ const gcp = require("@pulumi/gcp");
 const { enableApis } = require("./src/apis");
 const { createCluster } = require("./src/cluster");
 const { createRedis } = require("./src/redis");
+const { createPostgres } = require("./src/postgres");
 
 // Get configurations from Pulumi config
 const config = new pulumi.Config();
@@ -21,6 +22,7 @@ const apis = enableApis(provider);
 // Get component configurations
 const clusterConfig = config.requireObject("cluster");
 const redisConfig = config.requireObject("redis");
+const postgresConfig = config.requireObject("postgres");
 
 // Create GKE cluster
 const { cluster, nodePool, kubeconfig } = createCluster(
@@ -34,6 +36,13 @@ const { redis, host: redisHost, port: redisPort, authString: redisAuth } = creat
     provider,
     redisConfig,
     apis.redisApi
+);
+
+// Create PostgreSQL instance
+const { postgres, host: postgresHost, connectionName: postgresConnectionName } = createPostgres(
+    provider,
+    postgresConfig,
+    apis.sqlAdminApi
 );
 
 // Export necessary values
@@ -64,3 +73,7 @@ users:
 exports.redisHost = redisHost;
 exports.redisPort = redisPort;
 exports.redisAuth = redisAuth;
+
+// Export PostgreSQL values
+exports.postgresHost = postgresHost;
+exports.postgresConnectionName = postgresConnectionName;

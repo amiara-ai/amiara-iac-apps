@@ -15,3 +15,14 @@ config:
     tier: "BASIC"
     redisVersion: "REDIS_7_2"
     authEnabled: true
+  amiara-iac-apps:postgres:
+    instanceName: "amiara-dev-postgres"
+    tier: "db-f1-micro"
+    databaseVersion: "POSTGRES_15"
+    availabilityType: "ZONAL"
+    diskSize: 10
+    diskType: "PD_SSD"
+    dbName: "amiara_dev_db"
+    userName: "amiara_dev_user"
+  postgres:userPassword:
+    secure: v1:zWWvBWv221QFBm7Z:WPXe96ogctpBlkTyAuhjn9xSqEcgGNdAdmPzg06LhJDZtcKfvDPVDHC2
