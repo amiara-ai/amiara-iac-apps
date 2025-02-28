@@ -1,5 +1,4 @@
 const gcp = require("@pulumi/gcp");
-const pulumi = require("@pulumi/pulumi");
 
 exports.createCluster = (provider, config, dependencies) => {
     const cluster = new gcp.container.Cluster(config.clusterName, {

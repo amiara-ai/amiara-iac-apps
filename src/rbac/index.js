@@ -69,7 +69,7 @@ exports.createRbac = (provider, users) => {
             }],
             roleRef: {
                 kind: "ClusterRole",
-                name: user.role === "admin" ? "admin-role" : 
+                name: user.role === "admin" ? "admin-role" :
                      user.role === "developer" ? "developer-role" : "viewer-role",
                 apiGroup: "rbac.authorization.k8s.io"
             }

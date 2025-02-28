@@ -31,21 +31,21 @@ const rbacConfig = config.requireObject("rbac");
 const externalDnsConfig = config.getObject("externaldns") || {};
 
 // Create GKE cluster
-const { cluster, nodePool, kubeconfig } = createCluster(
+const { cluster, kubeconfig } = createCluster(
     provider,
     clusterConfig,
     [apis.computeApi, apis.containerApi]
 );
 
 // Create Redis instance
-const { redis, host: redisHost, port: redisPort, authString: redisAuth } = createRedis(
+const { host: redisHost, port: redisPort, authString: redisAuth } = createRedis(
     provider,
     redisConfig,
     apis.redisApi
 );
 
 // Create PostgreSQL instance
-const { postgres, host: postgresHost, connectionName: postgresConnectionName } = createPostgres(
+const { host: postgresHost, connectionName: postgresConnectionName } = createPostgres(
     provider,
     postgresConfig,
     apis.sqlAdminApi
@@ -111,10 +111,10 @@ users:
 }, { dependsOn: cluster });
 
 // Create IAM bindings for RBAC users
-const iam = createIamBindings(provider, rbacConfig.users, gcpConfig.require("project"));
+createIamBindings(provider, rbacConfig.users, gcpConfig.require("project"));
 
 // Create RBAC roles and bindings
-const rbac = createRbac(k8sProvider, rbacConfig.users);
+createRbac(k8sProvider, rbacConfig.users);
 
 // If ExternalDNS is enabled in configuration
 if (externalDnsConfig.enabled) {
