@@ -1,9 +1,18 @@
 {
-    "name": "amiara-iac-apps",
-    "main": "index.js",
-    "dependencies": {
-        "@pulumi/gcp": "^8.0.0",
-        "@pulumi/kubernetes": "^4.21.0",
-        "@pulumi/pulumi": "^3.0.0"
-    }
+  "name": "amiara-iac-apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@pulumi/gcp": "^8.0.0",
+    "@pulumi/kubernetes": "^4.21.0",
+    "@pulumi/pulumi": "^3.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "eslint": "^9.21.0",
+    "globals": "^16.0.0"
+  }
 }
