@@ -25,10 +25,17 @@ exports.enableApis = (provider) => {
         disableOnDestroy: false,
     }, { provider });
 
+    const enableDns = new gcp.projects.Service("enable-dns", {
+        project: provider.project,
+        service: "dns.googleapis.com",
+        disableOnDestroy: false,
+    }, { provider });
+
     return {
         computeApi: enableCompute,
         containerApi: enableContainer,
         redisApi: enableRedis,
         sqlAdminApi: enableSqlAdmin,
+        dnsApi: enableDns,
     };
 };

@@ -28,5 +28,17 @@ config:
     users:
       - email: "bryon@amiara.ai"
         role: "developer"
+  amiara-iac-apps:externaldns:
+    enabled: true
+    namespace: "dns"
+    serviceAccountId: "external-dns-k8s"
+    chartVersion: "8.7.1" # Confirmed available Bitnami chart version
+    domainFilters:
+      - "preview.amiara.ai"
+    txtOwnerId: "amiara-k8s"
+    policy: "sync"
+    additionalValues:
+      sources:
+        - ingress  # Configure to watch ingress resources
   postgres:userPassword:
     secure: v1:zWWvBWv221QFBm7Z:WPXe96ogctpBlkTyAuhjn9xSqEcgGNdAdmPzg06LhJDZtcKfvDPVDHC2
